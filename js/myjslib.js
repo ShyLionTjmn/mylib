@@ -417,8 +417,21 @@ function run_query(query, successfunc) {
   });
 };
 
+function has_right(right) {
+  let rights_string=user_rights;
+
+  if(rights_string.match(/^(?:,|) *super *(?:,|)$/i)) {
+    return true;
+  };
+  let reg=new RegExp("(?:^|,) *"+RegExp.escape(right)+" *(?:,|$)","i");
+  if(reg.test(rights_string)) {
+    return true;
+  };
+  return false;
+};
+
+
 
 if(typeof AJAX === "undefined") {
-  error_dialog("AJAX variable not defined");
   throw("AJAX variable not defined");
 };

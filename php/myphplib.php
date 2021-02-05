@@ -1,7 +1,7 @@
 <?php
 
-var $db=NULL;
-var $in_transaction=FALSE;
+$db=null;
+$in_transaction=FALSE;
 
 function run_query($query, $exit_on_error=TRUE) {
   global $db;
@@ -157,5 +157,60 @@ function mq($val) {
   global $db;
   return "'".mysqli_real_escape_string($db,$val)."'";
 };
+
+function dumper($var) {
+  ob_start();
+  var_dump($var);
+  $dump_str=ob_get_contents();
+  ob_end_clean();
+  return $dump_str;
+};
+
+function require_param($param_name) {
+  if(!isset($_REQUEST[$param_name])) {
+    error_exit("Required param '$param_name' is missing");
+  };
+};
+
+#json=file_get_contents("php://input");
+#q = json_decode($json, true);
+#if($q === NULL) {
+#  error_exit("Bad JSON input: $json");
+#};
+
+
+function require_list($list, $regex="//", $error_on_empty=FALSE) {
+  global $q;
+  if(is_array($list)) {
+    $check_list=$list;
+  } else {
+    $check_list=Array($list);
+  };
+  foreach($check_list as $p) {
+    require_p($p);
+    if(!is_array($q[$p])) {
+      error_exit("$p is not array. Trace: ".trace());
+    };
+    if($error_on_empty && count($q[$p]) == 0) {
+      error_exit("$p is empty array. Trace: ".trace());
+    };
+    foreach($q[$p] as $val) {
+      if(!preg_match($regex, $val)) {
+        error_exit("Array $p member $val does not match pattern $regex. Trace: ".trace());
+      };
+    };
+  };
+};
+
+function require_p($param_name, $param_regex=null) {
+  global $q;
+  if(!isset($q[$param_name])) {
+    error_exit("Required param '$param_name' is missing");
+  };
+  if(isset($param_regex) && !preg_match($param_regex, $q[$param_name])) {
+    error_exit("Required param '$param_name' has bad value '".$q[$param_name]."'");
+  };
+};
+
 
 ?>
