@@ -16,6 +16,7 @@ const BR="<BR/>";
 const A="<A/>";
 const FORM="<FORM/>";
 const TEXTAREA="<TEXTAREA/>";
+const PRE="<PRE/>";
 
 function GMK(bytes) {
   let measure="";
@@ -234,7 +235,6 @@ function error_dialog(message, opts) {
   };
   dialog.dialog(d);
   dialog.addClass("ui-state-error");
-  $("#led").css("background-color", "lightcoral");
 };
 function show_dialog(message, opts) {
   let dialog=$(DIV).prop("title", "Сообщение").css("white-space", "pre").text(message).appendTo("BODY");
@@ -375,7 +375,6 @@ function login_dialog(message, success_query, success_func) {
   dialog.dialog(d);
 };
 function run_query(query, successfunc) {
-  $("#led").css("background-color", "yellow");
   $.ajax({
     url: AJAX,
     method: 'POST',
