@@ -417,7 +417,7 @@ function run_query(query, successfunc) {
   });
 };
 
-if(AJAX === undefined) {
+if(typeof AJAX === "undefined") {
   error_dialog("AJAX variable not defined");
   throw("AJAX variable not defined");
 };
