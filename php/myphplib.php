@@ -131,6 +131,17 @@ function return_single($query, $exit_on_empty=FALSE, $exit_message=NULL) {
   };
 };
 
+function insert_id() {
+  global $db;
+  $ret = mysqli_insert_id($db);
+
+  if($ret == 0 || $ret === FALSE || $ret === NULL) {
+    error_exit("No insert id from prev query");
+  };
+
+  return $ret;
+};
+
 function close_db($commit=TRUE) {
   global $db;
   global $in_transaction;
